@@ -16,7 +16,7 @@
        tags:
           - common
      - name: "Verify consul installation"
-       shell: "consul --version"
+       shell: "/usr/local/bin/consul --version"
        register: consul_version
        tags:
           - common
