@@ -4,7 +4,7 @@
     connection: local 
     tasks:
       - name: "Setup Envoy repo"
-        command: {{ item }}
+        command: "{{ item }}"
         with_items:
           - yum install -y yum-utils
           - yum-config-manager --add-repo https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
