@@ -4,12 +4,11 @@
     connection: local 
     tasks:
       - name: "Setup Envoy repo"
-        yum_repository:
-          name: envoy
-          description: Envoy repository
-          baseurl: https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
-          enabled: yes
-          gpgcheck: no
+        command: {{ item }}
+        with_items:
+          - yum install -y yum-utils
+          - yum-config-manager --add-repo https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
+          - yum-config-manager  --enable tetrate-getenvoy-stable
       - name: "Install Python 3"
         yum:
           name: "{{ packages }}"
@@ -17,7 +16,6 @@
            packages: 
            - python3
            - npm
-           - yum-utils
            - getenvoy-envoy
       - name: "Install Jupyterhub and depended modules"
         pip:
