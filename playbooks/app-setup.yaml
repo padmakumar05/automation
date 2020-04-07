@@ -65,5 +65,5 @@
         become: yes
         become_user: root
       - name: "Start SideCar Envoy Proxy"
-        command: consul connect envoy -sidecar-for jhub
+        command: /usr/local/bin/consul connect envoy -sidecar-for jhub
 
