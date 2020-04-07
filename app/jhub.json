@@ -1,0 +1,7 @@
+{
+    "service": {
+      "name": "jhub",
+      "port": 8000,
+      "connect": { "sidecar_service": {} }
+    }
+  }

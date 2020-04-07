@@ -1,0 +1,68 @@
+---
+  - name: "Application Jhub  Setup"
+    hosts: localhost
+    connection: local 
+    tasks:
+      - name: "Setup Envoy repo"
+        yum_repository:
+          name: envoy
+          description: Envoy repository
+          baseurl: https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
+          enabled: yes
+          gpgcheck: no
+      - name: "Install Python 3"
+        yum:
+          name: "{{ packages }}"
+        vars:
+           packages: 
+           - python3
+           - npm
+           - yum-utils
+           - getenvoy-envoy
+      - name: "Install Jupyterhub and depended modules"
+        pip:
+          name: 
+            - jupyterhub
+            - notebook
+            - npm
+      - name: "Add jhub user"
+        user:
+          name: jhub
+          comment: Jupyterhub user
+          password: "$6$oRv7A/0fxveam4L4$HNJRgjtgu73z7QkxAdeWxdxeI5XhmvFQ3LUs/QsHPNLkfB49gz8LJqQ81WU5z1xBYMTgk0F/jkbvt6J.wuzvc"
+      - name: "Install 'configurable-http-proxy' node.js package globally"
+        npm:
+          name: configurable-http-proxy
+          global: yes
+      - name: "Generate Jupyterhub config"
+        command: jupyterhub --generate-config
+        become: yes
+        become_user: root
+        args:
+          chdir: /root
+      - name: "Update jupyterhub configuration"
+        command: sed -i "/c.JupyterHub.bind_url/a c.JupyterHub.bind_url = 'http://127.0.0.1:8000'" /root/jupyterhub_config.py
+        become: yes
+        become_user: root
+        args:
+          chdir: /root
+      - name: "Starting Jupyterhub"
+        command: jupyterhub --config /root/jupyterhub_config.py >> /var/log/jupyter.log
+        become: yes
+        become_user: root
+        args:
+          chdir: /root
+      - name: "Copy service definition file for jupyterhub"
+        copy:
+          src: /root/automation/app/jhub.json
+          dest: /etc/consul.d/config/jhub.json
+          owner: root
+          group: root
+          mode: '0644'
+      - name: "Register jhub service in Consul"
+        command: consul services register /etc/consul.d/config/jhub.json
+        become: yes
+        become_user: root
+      - name: "Start SideCar Envoy Proxy"
+        command: consul connect envoy -sidecar-for jhub
+
