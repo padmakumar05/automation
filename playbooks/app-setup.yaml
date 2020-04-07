@@ -19,6 +19,7 @@
            - getenvoy-envoy
       - name: "Install Jupyterhub and depended modules"
         pip:
+          executable: /bin/pip3
           name: 
             - jupyterhub
             - notebook
