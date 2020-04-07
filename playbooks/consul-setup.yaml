@@ -4,9 +4,12 @@
     connection: local 
     tasks:
      - name: "install necessary packages"
-       apt:
-         pkg:
-         - unzip
+       yum:
+           name: "{{ packages }}"
+       vars:
+          packages:
+          - httpd
+          - httpd-tools
        tags:
           - common
      - name: "Download and setup consul"
