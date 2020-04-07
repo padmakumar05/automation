@@ -5,4 +5,5 @@
 "datacenter": "useast1",
 "log_level": "INFO",
 "log_file": "/var/log/consul-server.log",
-"enable_syslog": true}
+"enable_syslog": true
+}
