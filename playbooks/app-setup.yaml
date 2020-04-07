@@ -33,16 +33,13 @@
         npm:
           name: configurable-http-proxy
           global: yes
-      - name: "Configuring and Starting Jupyterhub"
+      - name: "Configuring Jupyterhub"
         command: "{{ item }}"
         with_items:
          - /usr/local/bin/jupyterhub --generate-config
          - /bin/sed -i "/c.JupyterHub.bind_url/a c.JupyterHub.bind_url = 'http://127.0.0.1:8000'" /root/jupyterhub_config.py
-         - nohup /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py &
-        become: yes
-        become_user: root
-        args:
-          chdir: /root
+      - name: "Starting Jupyterhub"
+        shell: nohup /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py &
       - name: "Copy service definition file for jupyterhub"
         copy:
           src: /root/automation/app/jhub.json
