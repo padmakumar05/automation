@@ -11,7 +11,7 @@
      - name: "Download and setup consul"
        unarchive:
          src: https://releases.hashicorp.com/consul/1.7.2/consul_1.7.2_linux_amd64.zip
-         dest: /usr/local/bin
+         dest: /usr/bin
          remote_src: yes
        tags:
           - common
