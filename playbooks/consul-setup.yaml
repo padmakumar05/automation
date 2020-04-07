@@ -7,15 +7,23 @@
        apt:
          pkg:
          - unzip
+       tags:
+          - common
      - name: "Download and setup consul"
        unarchive:
          src: https://releases.hashicorp.com/consul/1.7.2/consul_1.7.2_linux_amd64.zip
          dest: /usr/local/bin
          remote_src: yes
+       tags:
+          - common
      - name: "Verify consul installation"
        shell: "consul --version"
        register: consul_version
+       tags:
+          - common
      - debug: var=consul_version.stdout_lines
+       tags:
+          - common
      - name: "Consul Config Directory"
        file: 
          path: "{{ item }}"
@@ -25,6 +33,8 @@
          - '/etc/consul.d'
          - '/etc/consul.d/data'
          - '/etc/consul.d/config'
+       tags:
+          - common
      - name: "Copy Bootstrap configuration"
        copy:
         src: '/root/automation/consul/consul-server-bootstrap.json' 
