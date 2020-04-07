@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Environment=GOMAXPROCS=2
 Restart=on-failure
-ExecStart=/usr/local/bin/consul agent -server -data-dir=/etc/consul.d/data -config-dir=/etc/consul.d/config -enable-script-checks=true
+ExecStart=/usr/local/bin/consul agent -dev -server -data-dir=/etc/consul.d/data -config-dir=/etc/consul.d/config -enable-script-checks=true
 ExecReload=/bin/kill-HUP$MAINPID
 KillSignal=SIGTERM
 
