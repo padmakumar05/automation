@@ -49,8 +49,8 @@
      - name: "Copy Bootstrap configuration"
        vars:
          consul_server: "{{ consul_server }}"
-       copy:
-        src: '/root/automation/consul/consul-agent-bootstrap.json.j2' 
+       template:
+        src: '/root/automation/consul/consul-agent-bootstrap.j2' 
         dest: '/etc/consul.d/config/config.json'
        tags:
           - consul-agent
@@ -64,7 +64,7 @@
        vars:
          consul_server: "{{ consul_server }}"
        template:
-        src: '/root/automation/consul/consul-client-bootstrap.json.j2' 
+        src: '/root/automation/consul/consul-client-bootstrap.j2' 
         dest: '/etc/consul.d/config/config.json'
        tags:
           - consul-client
