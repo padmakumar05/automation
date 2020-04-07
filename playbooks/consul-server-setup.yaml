@@ -1,0 +1,39 @@
+---
+  - name: "Consul Server Setup"
+    hosts: localhost
+    connection: local 
+    tasks:
+     - name: "install necessary packages"
+       apt:
+         pkg:
+         - unzip
+     - name: "Download and setup consul"
+       unarchive:
+         src: https://releases.hashicorp.com/consul/1.7.2/consul_1.7.2_linux_amd64.zip
+         dest: /usr/local/bin
+         remote_src: yes
+     - name: "Verify consul installation"
+       shell: "consul --version"
+       register: consul_version
+     - debug: var=consul_version.stdout_lines
+     - name: "Consul Config Directory"
+       file: 
+         path: "{{ item }}"
+         state: directory
+         mode: 'u=rwx,g=rx,o=rx'
+       with_items:
+         - '/etc/consul.d'
+         - '/etc/consul.d/data'
+         - '/etc/consul.d/config'
+     - name: "Copy Bootstrap configuration"
+       copy:
+        src: '/root/git-repo/consul-server-bootstrap.json' 
+        dest: '/etc/consul.d/config/config.json'
+     - name: 'Setup startup script for consul server'
+       copy:
+        src: '/root/git-repo/consul.service'
+        dest: '/etc/systemd/system/consul.service'
+     - name: 'Start Consul Server' 
+       systemd:
+        name: consul.service
+        state: started
