@@ -6,10 +6,6 @@
      - name: "install necessary packages"
        yum:
            name: "{{ packages }}"
-       vars:
-          packages:
-          - httpd
-          - httpd-tools
        tags:
           - common
      - name: "Download and setup consul"
