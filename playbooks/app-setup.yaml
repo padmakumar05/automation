@@ -4,11 +4,10 @@
     connection: local 
     tasks:
       - name: "Setup Envoy repo"
-        command: "{{ item }}"
-        with_items:
-          - yum install -y yum-utils
-          - yum-config-manager --add-repo https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
-          - yum-config-manager  --enable tetrate-getenvoy-stable
+        get_url:
+          url: https://getenvoy.io/linux/centos/tetrate-getenvoy.repo
+          dest: /etc/yum.repos.d/envoy.repo
+          mode: '0644'
       - name: "Install Python 3"
         yum:
           name: "{{ packages }}"
@@ -16,7 +15,12 @@
            packages: 
            - python3
            - npm
-           - getenvoy-envoy
+           - yum-utils
+      - name: "Enable Envoy Stable repo and Install Envoy"
+        yum:
+          name: getenvoy-envoy
+          enablerepo: tetrate-getenvoy-stable
+          state: present
       - name: "Install Jupyterhub and depended modules"
         pip:
           executable: /bin/pip3
@@ -37,7 +41,13 @@
         command: "{{ item }}"
         with_items:
          - /usr/local/bin/jupyterhub --generate-config
-         - /bin/sed -i "/c.JupyterHub.bind_url/a c.JupyterHub.bind_url = 'http://127.0.0.1:8000'" /root/jupyterhub_config.py
+        become: yes
+        become_user: root
+      - name: "Add bindurl config in Jupyterhub"
+        replace:
+          path: /root/jupyterhub_config.py
+          after: 'c.JupyterHub.bind_url'
+          replace: "c.JupyterHub.bind_url = 'http://127.0.0.1:8000'"
       - name: "Starting Jupyterhub"
         shell: nohup /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py &
       - name: "Copy service definition file for jupyterhub"
