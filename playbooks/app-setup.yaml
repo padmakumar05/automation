@@ -33,20 +33,12 @@
         npm:
           name: configurable-http-proxy
           global: yes
-      - name: "Generate Jupyterhub config"
-        command: jupyterhub --generate-config
-        become: yes
-        become_user: root
-        args:
-          chdir: /root
-      - name: "Update jupyterhub configuration"
-        command: sed -i "/c.JupyterHub.bind_url/a c.JupyterHub.bind_url = 'http://127.0.0.1:8000'" /root/jupyterhub_config.py
-        become: yes
-        become_user: root
-        args:
-          chdir: /root
-      - name: "Starting Jupyterhub"
-        command: jupyterhub --config /root/jupyterhub_config.py >> /var/log/jupyter.log
+      - name: "Configuring and Starting Jupyterhub"
+        command: "{{ item }}"
+        with_items:
+         - /usr/local/bin/jupyterhub --generate-config
+         - /bin/sed -i "/c.JupyterHub.bind_url/a c.JupyterHub.bind_url = 'http://127.0.0.1:8000'" /root/jupyterhub_config.py
+         - /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py >> /var/log/jupyterhub.log
         become: yes
         become_user: root
         args:
