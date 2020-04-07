@@ -61,7 +61,7 @@
           group: root
           mode: '0644'
       - name: "Register jhub service in Consul"
-        command: consul services register /etc/consul.d/config/jhub.json
+        command: /usr/local/bin/consul services register /etc/consul.d/config/jhub.json
         become: yes
         become_user: root
       - name: "Start SideCar Envoy Proxy"
