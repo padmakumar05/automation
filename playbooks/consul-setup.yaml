@@ -27,12 +27,40 @@
          - '/etc/consul.d/config'
      - name: "Copy Bootstrap configuration"
        copy:
-        src: '/root/git-repo/consul-server-bootstrap.json' 
+        src: '/root/automation/consul/consul-server-bootstrap.json' 
         dest: '/etc/consul.d/config/config.json'
+        tags:
+          - consul-server
      - name: 'Setup startup script for consul server'
        copy:
-        src: '/root/git-repo/consul.service'
+        src: '/root/automation/consul/consul-server.service'
         dest: '/etc/systemd/system/consul.service'
+        tags:
+          - consul-server
+     - name: "Copy Bootstrap configuration"
+       copy:
+        src: '/root/automation/consul/consul-agent-bootstrap.json' 
+        dest: '/etc/consul.d/config/config.json'
+        tags:
+          - consul-agent
+     - name: 'Setup startup script for consul server'
+       copy:
+        src: '/root/automation/consul/consul-agent.service'
+        dest: '/etc/systemd/system/consul.service'
+        tags:
+          - consul-agent
+     - name: "Copy Bootstrap configuration"
+       copy:
+        src: '/root/automation/consul/consul-client-bootstrap.json' 
+        dest: '/etc/consul.d/config/config.json'
+        tags:
+          - consul-client
+     - name: 'Setup startup script for consul client server'
+       copy:
+        src: '/root/automation/consul/consul-client.service'
+        dest: '/etc/systemd/system/consul.service'
+        tags:
+          - consul-client
      - name: 'Start Consul Server' 
        systemd:
         name: consul.service

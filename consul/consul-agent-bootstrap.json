@@ -1,0 +1,10 @@
+{
+"bootstrap": true,
+"client_addr": "0.0.0.0",
+"server": true,
+"datacenter": "useast1",
+"log_level": "INFO",
+"log_file": "/var/log/consul-server.log",
+"enable_syslog": true,
+"start_join": "{{ consul_server }}"
+}
