@@ -50,7 +50,7 @@
           path: /root/jupyterhub_config.py
           after: 'c.JupyterHub.bind_url'
           replace: "c.JupyterHub.bind_url = 'http://127.0.0.1:8000'"
-          regexp: 'c.JupyterHub.bind_url'
+          regexp: '^#c.JupyterHub.bind_url.*$'
       - name: "Starting Jupyterhub"
         shell: nohup /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py &
       - name: "Copy service definition file for jupyterhub"
