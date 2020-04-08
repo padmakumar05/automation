@@ -10,6 +10,6 @@ template {
   destination = "/etc/ssl/certs/certs.pem"
 }
 template {
-  source = "haproxy.conf.tmpl"
+  source = "/root/automation/frontend/haproxy.conf.tmpl"
   destination = "/etc/haproxy.conf"
 }
