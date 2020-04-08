@@ -5,6 +5,14 @@ defaults
     timeout server  50000
 
 backend connect
+ option http-keep-alive
+    option forwardfor
+    balance roundrobin
+    http-request set-header X-Real-IP %[src]
+    http-request set-header Host %[req.hdr(Host)]
+    http-request add-header X-Forward-For %[src]
+    cookie jupyterhub-session-id insert
+
 {{range connect "jhub"}}
     server  jhub {{.Address}}:{{.Port}} ssl verify required ca-file /etc/ssl/certs/ca.crt crt /etc/ssl/certs/certs.pem
 {{end}}
