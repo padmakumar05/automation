@@ -32,7 +32,7 @@
         user:
           name: jhub
           comment: Jupyterhub user
-          password: "$6$oRv7A/0fxveam4L4$HNJRgjtgu73z7QkxAdeWxdxeI5XhmvFQ3LUs/QsHPNLkfB49gz8LJqQ81WU5z1xBYMTgk0F/jkbvt6J.wuzvc"
+          password: "$6$mysecretsalt$5dZrvgYIQQS5AgVqW7LdTo3VapWmjf9lFtVKVggHB1eJ4bnidJLZaKCftjwCDeiy2LL4lzdhPR91cNKqIW44i/"
       - name: "Install 'configurable-http-proxy' node.js package globally"
         npm:
           name: configurable-http-proxy
