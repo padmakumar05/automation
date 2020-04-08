@@ -5,6 +5,13 @@
 "datacenter": "useast1",
 "log_level": "INFO",
 "log_file": "/var/log/consul-server.log",
+"encrypt": "sWh5iZbnJAY69HExwEmy1ERAMhR9eFBNLL2truSOH30=",
 "enable_syslog": true,
-"start_join": [ "{{ consul_server }}" ]
+"start_join": [ "{{ consul_server }}" ],
+"connect": {
+   "enabled": true
+ },
+ "auto_encrypt": {
+    "allow_tls": true
+  }
 }

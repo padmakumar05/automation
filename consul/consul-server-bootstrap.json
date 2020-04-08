@@ -5,5 +5,12 @@
 "datacenter": "useast1",
 "log_level": "INFO",
 "log_file": "/var/log/consul-server.log",
-"enable_syslog": true
+"enable_syslog": true,
+"encrypt": "sWh5iZbnJAY69HExwEmy1ERAMhR9eFBNLL2truSOH30=",
+"connect": {
+    "enabled": true
+  },
+  "auto_encrypt": {
+    "allow_tls": true
+  }
 }
