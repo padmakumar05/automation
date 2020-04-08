@@ -63,6 +63,8 @@
         become: yes
         become_user: root
       - name: "Start SideCar Envoy Proxy"
-        shell: nohup /usr/local/bin/consul connect envoy -sidecar-for jhub &
+        shell: nohup /usr/local/bin/consul connect envoy -sidecar-for jhub-{{ id }} &
+        vars:
+          id: {{ id }}
         
 
