@@ -14,6 +14,17 @@
          src: https://releases.hashicorp.com/consul-template/0.24.1/consul-template_0.24.1_linux_amd64.zip
          dest: /usr/local/bin
          remote_src: yes
+      - name: "Copy service definition file for haproxy"
+        copy:
+          src: /root/automation/frontend/haproxy.json
+          dest: /etc/consul.d/config/haproxy.json
+          owner: root
+          group: root
+          mode: '0644'
+      - name: "Register haproxy service in Consul"
+        command: /usr/local/bin/consul services register /etc/consul.d/config/haproxy.json
+        become: yes
+        become_user: root
       - name: "Start Haproxy"
         shell: nohup /usr/local/bin/consul-template -config /root/automation/frontend/haproxy-ingress-config.hcl &
         
