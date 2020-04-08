@@ -1,0 +1,14 @@
+defaults
+    mode    http
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+backend connect
+{{range connect "jhub"}}
+    server  jhub {{.Address}}:{{.Port}} ssl verify required ca-file /etc/ssl/certs/ca.crt crt /etc/ssl/certs/certs.pem
+{{end}}
+
+frontend app
+    bind :80
+    default_backend connect
