@@ -53,12 +53,14 @@
       - name: "Starting Jupyterhub"
         shell: nohup /usr/local/bin/jupyterhub --config /root/jupyterhub_config.py &
       - name: "Copy service definition file for jupyterhub"
-        copy:
-          src: /root/automation/app/jhub.json
+        template:
+          src: /root/automation/app/jhub.j2
           dest: /etc/consul.d/config/jhub.json
           owner: root
           group: root
           mode: '0644'
+        vars:
+          id: "{{ id }}"
       - name: "Register jhub service in Consul"
         command: /usr/local/bin/consul services register /etc/consul.d/config/jhub.json
         become: yes

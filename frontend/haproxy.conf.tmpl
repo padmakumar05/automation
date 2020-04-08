@@ -14,7 +14,7 @@ backend connect
     cookie jupyterhub-session-id insert
 
 {{range connect "jhub"}}
-    server  jhub {{.Address}}:{{.Port}} ssl verify required ca-file /etc/ssl/certs/ca.crt crt /etc/ssl/certs/certs.pem
+    server  {{ .ID }} {{.Address}}:{{.Port}} ssl verify required ca-file /etc/ssl/certs/ca.crt crt /etc/ssl/certs/certs.pem check cookie {{ .ID }}
 {{end}}
 
 frontend app
